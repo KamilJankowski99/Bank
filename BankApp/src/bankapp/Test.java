@@ -18,8 +18,15 @@ public class Test {
         Account acA = new Account("John", "Doe", 50000, "12345678901234567890123456");
         Account acB = new Account("John", "Doe", 50000, "12345678901234567890123456");
         Bank bank = new Bank();
+        System.out.println("Saldo konta A: " +acA.getBalance());
+        System.out.println("Saldo konta B: " +acB.getBalance());
         int result[]= bank.transfer(acA,acB);
         System.out.println("Konto A: "+result[0]+" Konto B: "+result[1]);
+        System.out.println("Saldo konta A: " +acA.getBalance());
+        System.out.println("Saldo konta B: " +acB.getBalance());
+        int test = bank.deposit(acB);
+        System.out.println("Saldo konta A: " +acA.getBalance());
+        System.out.println("Saldo konta B: " +acB.getBalance());
     }
     
 }

@@ -5,12 +5,67 @@
  */
 package bankapp;
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+
 /**
  *
  * @author Brzezik
  */
-public class Bank { 
+class Task implements Runnable 
+{
+    private String name;
+ 
+    public Task(String name) 
+    {
+        this.name = name;
+    }
+     
+    public String getName() {
+        return name;
+    }
+ 
+    @Override
+    public void run() 
+    {
+        try
+        {
+            Long duration = (long) (Math.random() * 10);
+            System.out.println("Doing a task during : " + name);
+            TimeUnit.SECONDS.sleep(duration);
+        } 
+        catch (InterruptedException e) 
+        {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+public class Bank 
+{ 
     public Scanner s= new Scanner(System.in);
+    
+    private ThreadPoolExecutor executor;
+    
+    public Bank(int numberOfThreads)
+    {       
+         this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(numberOfThreads);
+        for (int i = 0; i < 10; i++) 
+        {
+            Task task = new Task("Task " + i);
+            System.out.println("A new task has been added : " + task.getName());
+            executor.execute(task);
+        }
+        System.out.println("Maximum threads inside pool " + executor.getMaximumPoolSize());
+
+    }
+    
+    public void close(){
+                this.executor.shutdown();
+    }
     
     public int storepayment(Account account){
         System.out.println("Kwota do zapłaty");

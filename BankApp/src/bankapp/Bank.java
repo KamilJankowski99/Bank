@@ -3,7 +3,6 @@ package bankapp;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 class Deposit implements Runnable {
 
@@ -21,56 +20,50 @@ class Deposit implements Runnable {
 
     @Override
     public void run() {
-       // try {
-            int currentBalance = this.account.getBalance();
-            int newBalance = currentBalance + this.wplata;
-            this.account.setBalance(newBalance);
-            //return this.account.getBalance();
-            //TimeUnit.SECONDS.sleep(1);
-       // } catch (InterruptedException e) {
-         //   e.printStackTrace();
-       // }
+        int currentBalance = this.account.getBalance();
+        int newBalance = currentBalance + this.wplata;
+        this.account.setBalance(newBalance);
     }
 }
 
-class Withdraw implements Runnable{
+class Withdraw implements Runnable {
+
     private final Account account;
     private final int wyciag;
-    
-    public Withdraw(Account account, int wyciag){
+
+    public Withdraw(Account account, int wyciag) {
         this.wyciag = wyciag;
         this.account = account;
-        
     }
-    
+
     public int close() {
         return this.account.getBalance();
     }
-    
+
     @Override
     public void run() {
-            int currentBalance = this.account.getBalance();
-            int newBalance = currentBalance - this.wyciag;
-            this.account.setBalance(newBalance);
+        int currentBalance = this.account.getBalance();
+        int newBalance = currentBalance - this.wyciag;
+        this.account.setBalance(newBalance);
     }
 }
 
-class Transfer implements Runnable{
+class Transfer implements Runnable {
+
     private final Account accountA;
     private final Account accountB;
     private final int kwota;
-            
-            public Transfer(Account accountA, Account accountB, int kwota){
-                this.accountA = accountA;
-                this.accountB = accountB;
-                this.kwota = kwota;
-            }
-            
-            public int[] close(){
-               return new int[]{accountA.getBalance(), accountB.getBalance()};
-                        
-            }
-            
+
+    public Transfer(Account accountA, Account accountB, int kwota) {
+        this.accountA = accountA;
+        this.accountB = accountB;
+        this.kwota = kwota;
+    }
+
+    public int[] close() {
+        return new int[]{accountA.getBalance(), accountB.getBalance()};
+    }
+
     @Override
     public void run() {
         int currentBalanceA = accountA.getBalance();

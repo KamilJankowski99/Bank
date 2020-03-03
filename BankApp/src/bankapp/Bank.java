@@ -21,15 +21,64 @@ class Deposit implements Runnable {
 
     @Override
     public void run() {
-        try {
+       // try {
             int currentBalance = this.account.getBalance();
             int newBalance = currentBalance + this.wplata;
             this.account.setBalance(newBalance);
             //return this.account.getBalance();
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            //TimeUnit.SECONDS.sleep(1);
+       // } catch (InterruptedException e) {
+         //   e.printStackTrace();
+       // }
+    }
+}
+
+class Withdraw implements Runnable{
+    private final Account account;
+    private final int wyciag;
+    
+    public Withdraw(Account account, int wyciag){
+        this.wyciag = wyciag;
+        this.account = account;
+        
+    }
+    
+    public int close() {
+        return this.account.getBalance();
+    }
+    
+    @Override
+    public void run() {
+            int currentBalance = this.account.getBalance();
+            int newBalance = currentBalance - this.wyciag;
+            this.account.setBalance(newBalance);
+    }
+}
+
+class Transfer implements Runnable{
+    private final Account accountA;
+    private final Account accountB;
+    private final int kwota;
+            
+            public Transfer(Account accountA, Account accountB, int kwota){
+                this.accountA = accountA;
+                this.accountB = accountB;
+                this.kwota = kwota;
+            }
+            
+            public int[] close(){
+               return new int[]{accountA.getBalance(), accountB.getBalance()};
+                        
+            }
+            
+    @Override
+    public void run() {
+        int currentBalanceA = accountA.getBalance();
+        int currentBalanceB = accountB.getBalance();
+        int newBalanceA = currentBalanceA - this.kwota;
+        int newBalanceB = currentBalanceB + this.kwota;
+        accountA.setBalance(newBalanceA);
+        accountB.setBalance(newBalanceB);
     }
 }
 
@@ -65,24 +114,13 @@ public class Bank {
         this.executor.execute(operacja);
     }
 
-    public int withdraw(Account account) {
-        System.out.println("Ile wypłacić");
-        int x = s.nextInt();
-        int currentBalance = account.getBalance();
-        int newBalance = currentBalance - x;
-        account.setBalance(newBalance);
-        return account.getBalance();
+    public void withdraw(Account account, int wyciag) {
+        Withdraw operacja = new Withdraw(account, wyciag);
+        this.executor.execute(operacja);
     }
 
-    public int[] transfer(Account accountA, Account accountB) {
-        System.out.println("Ile przelać");
-        int x = s.nextInt();
-        int currentBalanceA = accountA.getBalance();
-        int currentBalanceB = accountB.getBalance();
-        int newBalanceA = currentBalanceA - x;
-        int newBalanceB = currentBalanceB + x;
-        accountA.setBalance(newBalanceA);
-        accountB.setBalance(newBalanceB);
-        return new int[]{accountA.getBalance(), accountB.getBalance()};
+    public void transfer(Account accountA, Account accountB, int kwota) {
+        Transfer operacja = new Transfer(accountA, accountB, kwota);
+        this.executor.execute(operacja);
     }
 }

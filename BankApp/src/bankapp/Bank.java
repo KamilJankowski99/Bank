@@ -28,11 +28,18 @@ class Deposit implements Runnable {
 
 class Withdraw implements Runnable {
 
-    private final Account account;
+    private Account account;
     private final int wyciag;
-
+    
     public Withdraw(Account account, int wyciag) {
         this.wyciag = wyciag;
+        this.account = account;
+    }
+    
+    public Account getAccount(){
+        return this.account;
+    }
+    public void setAccount(Account account){
         this.account = account;
     }
 
@@ -109,6 +116,10 @@ public class Bank {
 
     public void withdraw(Account account, int wyciag) {
         Withdraw operacja = new Withdraw(account, wyciag);
+        this.executor.execute(operacja);
+    }
+    
+    public void withdraw(Withdraw operacja){
         this.executor.execute(operacja);
     }
 

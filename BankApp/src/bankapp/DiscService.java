@@ -34,10 +34,10 @@ public class DiscService {
             withdraws.add(readWithdrawFromFile(plik));
             }
             
-      //      Files.move(plik, Paths.get(plik.getParent()+"\\processed\\"+plik.getFileName()));
+            Files.move(plik, Paths.get(plik.getParent()+"\\processed\\"+plik.getFileName()));
             System.out.println("Importuje dane z pliku: " + plik.getFileName());
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(0);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
             }//troche czasu na propagacje - w kolejce wszystko jest estymacja
@@ -109,10 +109,24 @@ public class DiscService {
             tempAccount.setAccnumber(accNr);
             Withdraw tempWith = new Withdraw(tempAccount, amount);
             return tempWith;
-        }
-        
-          
+        }        
     }
+    
+//    private Withdraw readDepositFromFile (Path filePath) throws IOException{
+//       
+//        Account tempAccount = new Account();
+//        int amount;
+//        String accNr = new String();
+//        try(BufferedReader reader = Files.newBufferedReader(filePath, StandardCharsets.UTF_8)){
+//            accNr = reader.readLine();
+//            amount = Integer.parseInt(reader.readLine());
+//            tempAccount.setAccnumber(accNr);
+//            Withdraw tempWith = new Withdraw(tempAccount, amount);
+//            return tempWith;
+//        }        
+//    }
+
+    
 }
    
 

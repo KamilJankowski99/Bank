@@ -14,6 +14,7 @@ public class Test {
     public Scanner s;
     public Random rand;
     public static List<Account> accounts = new ArrayList<Account>();
+    public static List<Withdraw> withdraws = new ArrayList<Withdraw>();
 
     public static void main(String[] args) throws IOException {
         Scanner s = new Scanner(System.in);
@@ -31,10 +32,28 @@ public class Test {
         for (Account konto : Service.getAccounts()) {
             accounts.add(konto);
         }
+        for (Withdraw wyciag : Service.getWithdraws()) {
+            for (Account account : accounts){
+                String nr1 = account.getAccnumber();
+                String nr2 = wyciag.getAccount().getAccnumber();
+                if (nr1.equals(nr2)){
+                    wyciag.setAccount(account);
+                }
+            }
+            
+            withdraws.add(wyciag);
+        }
+        
 
+        
+        
         Account acA = new Account("John", "Doe", initialBalanceA, "12345678901234567890123456");
         Account acB = new Account("John", "Doe", initialBalanceB, "12345678901234567890123456");
         Bank bank = new Bank(1);
+        
+        for (Withdraw wyciag : withdraws) {
+            bank.withdraw(wyciag);
+        }
 
         System.out.println("Saldo poczatkowe konta A: " + acA.getBalance());
         System.out.println("Saldo poczatkowe konta B: " + acB.getBalance());

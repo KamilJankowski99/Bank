@@ -6,11 +6,17 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 class Deposit implements Runnable {
 
-    private final Account account;
+    private Account account;
     private final int wplata;
 
     public Deposit(Account account, int wplata) {
         this.wplata = wplata;
+        this.account = account;
+    }
+    public Account getAccount(){
+        return this.account;
+    }
+    public void setAccount(Account account){
         this.account = account;
     }
 
@@ -62,14 +68,26 @@ class Withdraw implements Runnable {
 
 class Transfer implements Runnable {
 
-    private final Account accountA;
-    private final Account accountB;
+    private Account accountA;
+    private Account accountB;
     private final int kwota;
 
     public Transfer(Account accountA, Account accountB, int kwota) {
         this.accountA = accountA;
         this.accountB = accountB;
         this.kwota = kwota;
+    }
+    public Account getAccountA(){
+        return this.accountA;
+    }
+    public void setAccountA(Account account){
+        this.accountA = account;
+    }
+    public Account getAccountB(){
+        return this.accountB;
+    }
+    public void setAccountB(Account account){
+        this.accountB = account;
     }
 
     public int[] close() {
@@ -125,7 +143,7 @@ public class Bank {
     }
 
     public void withdraw(Account account, int wyciag) {
-        Withdraw operacja = new Withdraw(account, wyciag);
+        Withdraw operacja = new Withdraw(account, wyciag); 
         this.executor.execute(operacja);
     }
     

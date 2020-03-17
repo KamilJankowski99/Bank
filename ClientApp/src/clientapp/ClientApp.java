@@ -86,8 +86,12 @@ public class ClientApp {
     public static void commandDeposit(){
         String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
         Scanner c1 = new Scanner(System.in);
-        String command = "Wplata";
-                
+        Random r= new Random();
+        String command="";
+        for (int y = 0; y < 5; y++) {
+            int pn = r.nextInt(89) + 10;
+            command = command + Integer.toString(pn);
+        }   
         System.out.print("Podaj kwote: ");
         String deposit = c1.nextLine();
         System.out.println("Podaj numer konta: ");
@@ -106,7 +110,12 @@ public class ClientApp {
     public static void commandWithdraw(){
         String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
         Scanner c1 = new Scanner(System.in);
-        String command = "Wyciąg";
+        Random r= new Random();
+        String command="";
+        for (int y = 0; y < 5; y++) {
+            int pn = r.nextInt(89) + 10;
+            command = command + Integer.toString(pn);
+        }
                 
         System.out.print("Podaj kwote: ");
         String withdraw = c1.nextLine();
@@ -125,9 +134,13 @@ public class ClientApp {
     
     public static void commandTransfer(){
         String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
-        boolean ch=false;
         Scanner c1 = new Scanner(System.in);
-        String command = "Przelew";
+        Random r= new Random();
+        String command="";
+        for (int y = 0; y < 5; y++) {
+            int pn = r.nextInt(89) + 10;
+            command = command + Integer.toString(pn);
+        }
         System.out.println("Podaj numer konta, z którego chcesz przelać fundusze: ");
         String accnr1 = checkacc().getAccnumber();
         System.out.println("Podaj numer konta, na które chcesz przenieść fundusze: ");   
@@ -177,7 +190,7 @@ public class ClientApp {
                     }
                       else if (choice.equals("p")) {
                         commandTransfer();
-                    } else {
+                    } else { 
                         System.out.println("Nieprawidlowa komenda");
                     }
                     choice = questionInput("Czy chcesz zakonczyc?(y/n)");

@@ -16,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Random;
+import java.io.File;
 
 public class DiscService {
 
@@ -34,9 +36,30 @@ public class DiscService {
             if(validateFileExtnWit(plik.getFileName().getFileName().toString())){
             withdraws.add(readWithdrawFromFile(plik));
             }
-            
-            Files.move(plik, Paths.get(plik.getParent()+"\\processed\\"+plik.getFileName()));
-            System.out.println("Importuje dane z pliku: " + plik.getFileName());
+            File f= new File(plik.getParent()+"\\processed\\"+plik.getFileName());
+            if(f.exists()){
+                Account tempa= readFromFile(plik);
+                Account tempb= readFromFile(Paths.get(plik.getParent()+"\\processed\\"+plik.getFileName()));
+                if(tempa.getBalance()!=tempb.getBalance()){
+                    Random rac= new Random(); 
+                    String newname=""; 
+                    for (int y = 0; y < 13; y++) {
+                        int pn = rac.nextInt(89) + 10;
+                        newname = newname + Integer.toString(pn);
+                    }
+                    newname=newname+".acc";
+                    Path np=Paths.get(plik.getParent()+"\\processed\\"+plik.getFileName());
+                    Files.move(plik, np.resolveSibling(newname) );
+                    System.out.println("Importuje dane z pliku: " + plik.getFileName()+" jako plik: "+newname);
+                }
+                else{
+                    Files.delete(plik);
+                }
+            }
+            else{
+                Files.move(plik, Paths.get(plik.getParent()+"\\processed\\"+plik.getFileName()));
+                System.out.println("Importuje dane z pliku: " + plik.getFileName());
+            }
             try {
                 TimeUnit.SECONDS.sleep(0);
             } catch (InterruptedException ex) {

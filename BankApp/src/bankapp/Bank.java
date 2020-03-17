@@ -150,7 +150,7 @@ public class Bank {
     }
     
     public void materializeAccounts(){
-                for (Account account : this.accounts ){//dla wszystkich wpisow z listy accounts zapisuje plik z danymi klienta
+                for (Account account : this.accounts ){
                     int tempB = account.getBalance();
                     String tempAnum = account.getAccnumber();
                     String tempN = account.getName();
@@ -172,7 +172,7 @@ public class Bank {
     }
     
     public void importAccounts() throws IOException{
-                for (Account konto : Service.getAccounts()) {//pobiera wpisy z listy w service i przekazuje do aktualnej listy
+                for (Account konto : Service.getAccounts()) {
                 this.accounts.add(konto);
         }
     }
@@ -185,7 +185,7 @@ public class Bank {
                 if (nr1.equals(nr2)){
                     wyciag.setAccount(account);
                 }
-            }//pobiera wpisy z listy wyciagow w service i przenosi je do aktualnej listy
+            }
             withdraws.add(wyciag);
 
         }
@@ -193,7 +193,7 @@ public class Bank {
     
     public void importWithdraws(){
                 for (Withdraw wyciag : this.withdraws) {
-                this.withdraw(wyciag);//wykonuje wszystkie operacje withdraw z listy?
+                this.withdraw(wyciag);
 
                     
         }

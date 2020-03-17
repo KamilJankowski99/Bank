@@ -19,25 +19,21 @@ public class ClientApp {
     public Scanner s;
     public Random rand;
 
-    public static Account login() {//metoda pozwala wybrac konto na podstawie jego numeru(nazwie pliku) i utworzyc nowy obiekt wypelniony odpowiednio danymi
+    public static Account checkacc() {
         boolean ch = false;
         Account ac1 = new Account();
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\processed\\";
         while (!ch) {
             Scanner nr = new Scanner(System.in);
             try {
-                System.out.print("Podaj numer konta: ");
                 String numer = nr.nextLine();
-                numer = numer + ".txt";
+                ac1.setAccnumber(numer);
+                numer = sharedFolder +numer+ ".acc";
                 Scanner f = new Scanner(new File(numer));
-                ac1.setName(f.nextLine());
-                ac1.setSurname(f.nextLine());
-                ac1.setAccnumber(f.nextLine());
-                ac1.setCnumber(f.nextLine());
-                ac1.setBalance(f.nextInt());
                 ch = true;
             } catch (FileNotFoundException e) {
                 System.out.println("");
-                System.out.println("Konto nie istnieje");
+                System.out.println("Podane konto nie istnieje");
                 System.out.println("");
                 nr.reset();
 
@@ -45,28 +41,8 @@ public class ClientApp {
         }
         return ac1;
     }
-
-    public static void update(Account a, int newbal) {//metoda zmienia saldo w odpowiednim pliku
-        String num = a.getAccnumber();
-        num = num + ".txt";
-        try {
-
-            PrintWriter pw = new PrintWriter(num);
-            pw.println(a.getName());
-            pw.println(a.getSurname());
-            pw.println(a.getAccnumber());
-            pw.println(a.getCnumber());
-            pw.println(newbal);
-            pw.close();
-
-        } catch (FileNotFoundException e) {
-            System.out.println("nie wiem jak, ale pliku brak :/");
-        }
-
-    }
-
-    public static void newClient() {//metoda tworzy nowy plik klienta nazwany losowym numerem konta
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
+    public static void newClient() {
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
         Random rac = new Random();
         String acnum = "";
         String cnum = "";
@@ -89,7 +65,7 @@ public class ClientApp {
         String cbalance = cl.nextLine();
         try {
 
-            PrintWriter pw = new PrintWriter(sharedFolder + acnum + ".acc"); //zrobic read 
+            PrintWriter pw = new PrintWriter(sharedFolder + acnum + ".acc"); 
             pw.println(cname);
             pw.println(csname);
             pw.println(acnum);
@@ -108,14 +84,14 @@ public class ClientApp {
     }
     
     public static void commandDeposit(){
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
         Scanner c1 = new Scanner(System.in);
         String command = "Wplata";
                 
         System.out.print("Podaj kwote: ");
         String deposit = c1.nextLine();
         System.out.println("Podaj numer konta: ");
-        String accnr = c1.nextLine();
+        String accnr = checkacc().getAccnumber();
                         
         try{
             PrintWriter pw = new PrintWriter(sharedFolder + command + ".dep");
@@ -128,14 +104,14 @@ public class ClientApp {
     }
     
     public static void commandWithdraw(){
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
         Scanner c1 = new Scanner(System.in);
         String command = "Wyciąg";
                 
         System.out.print("Podaj kwote: ");
         String withdraw = c1.nextLine();
         System.out.println("Podaj numer konta: ");
-        String accnr = c1.nextLine();
+        String accnr = checkacc().getAccnumber();
                         
         try{
             PrintWriter pw = new PrintWriter(sharedFolder + command + ".wit");
@@ -148,13 +124,14 @@ public class ClientApp {
     }
     
     public static void commandTransfer(){
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
+        boolean ch=false;
         Scanner c1 = new Scanner(System.in);
         String command = "Przelew";
         System.out.println("Podaj numer konta, z którego chcesz przelać fundusze: ");
-        String accnr1 = c1.nextLine();
+        String accnr1 = checkacc().getAccnumber();
         System.out.println("Podaj numer konta, na które chcesz przenieść fundusze: ");   
-        String accnr2 = c1.nextLine();
+        String accnr2 = checkacc().getAccnumber();
         System.out.println("Podaj kwote: ");
         String transfer = c1.nextLine();
         try{
@@ -191,15 +168,13 @@ public class ClientApp {
         int withdrawAmountB = 0;
         int depositAmountA = 0;
         int depositAmountB = 0;
-        Account[] ac = new Account[5];//
         int t;//
-        int acn = 1;//
         
         while (res) {
             String choice = questionInput("Co chcesz zrobic?(o=operacje bankowe/k=nowe konto)");
             if (choice.equals("o")) {
                 res = false;
-                //ac[0] =login();
+                
 
                 while (cont) {
                     choice = questionInput("Co chcesz zrobic?(wp=wplata/wy=wyplata/p=przelew)");
@@ -210,29 +185,14 @@ public class ClientApp {
                         System.out.println("operacja wyplaty");
                         commandWithdraw();
                     } else if (choice.equals("p")) {
-                        if (acn == 5) {
-                            System.out.println("przekroczono max ilosc kont");//mozna zmienic limit ale wydaje mi sie ze raczej tylu przelewow na raz nie bedziemy robic 
-                        } else {
-                           commandTransfer();
-                        }
+                        commandTransfer();
                     } else {
                         System.out.println("Nieprawidlowa komenda");
                     }
                     choice = questionInput("Czy chcesz zakonczyc?(y/n)");
                     if (choice.equals("y")) {
                         cont = false;
-                        System.out.println("operacje zamykajace watki i zapisujace koncowe saldo do pliku/plikow");
-                        if (exist) {
-                            for (int i = 0; i < acn; i++) {
-                                System.out.println("zapis w pliku " + i);
-                                //update(ac[i],obecnesaldo);
-                            }
-                        } else {
-                            System.out.println("zapis w jednym pliku");
-                            //update(ac[0],obecnesaldo); 
-                        }
                     } else if (choice.equals("n")) {
-                        System.out.println("nowy watek");
                     } else {
                         System.out.println("Nieprawidlowa komenda");
                     }
@@ -244,6 +204,7 @@ public class ClientApp {
                 System.out.println("Nieprawidlowa komenda");
             }
         }
+        
         
     }
 }

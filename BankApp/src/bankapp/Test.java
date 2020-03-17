@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.PrintWriter; 
 
 public class Test {
 
@@ -17,6 +17,8 @@ public class Test {
     public Random rand;
     public static List<Account> accounts = new ArrayList<Account>();
     public static List<Withdraw> withdraws = new ArrayList<Withdraw>();
+    public static List<Transfer> transfers = new ArrayList<Transfer>();
+    public static List<Deposit> deposits = new ArrayList<Deposit>();
 
     public static void main(String[] args) throws IOException {
        /* Scanner s = new Scanner(System.in);
@@ -45,9 +47,36 @@ public class Test {
             
             withdraws.add(wyciag);
         }
+        for (Transfer transfer : Service.getTransfers()) {
+            for (Account account : accounts){
+                String nr1 = account.getAccnumber();
+                String nr2 = transfer.getAccountA().getAccnumber();
+                String nr3 = transfer.getAccountB().getAccnumber();
+                if (nr1.equals(nr2)){
+                    transfer.setAccountA(account);
+                }
+                else if(nr1.equals(nr3)){
+                    transfer.setAccountB(account);
+                }
+                else{}
+            }
+            
+            transfers.add(transfer);
+        }
+        for (Deposit deposit : Service.getDeposits()) {
+            for (Account account : accounts){
+                String nr1 = account.getAccnumber();
+                String nr2 = deposit.getAccount().getAccnumber();
+                if (nr1.equals(nr2)){
+                    deposit.setAccount(account);
+                }
+            }
+            
+            deposits.add(deposit);
+        }
         //rozumiem ze na koniec chcesz dla wszystkich list wykonac odpowiadajace im operacje(zakladam tez ze tym pewnie teraz sie zajmujesz wiec tego nie tykam) a potem ostateczny balans wpisac juz do samych kont
         //idac tym tropem masz tu propozycje zapisu 
-        for (Account account : accounts){
+        /*for (Account account : accounts){
             int tempB=account.getBalance();
             String tempAnum= account.getAccnumber();
             String tempN=account.getName();
@@ -65,7 +94,7 @@ public class Test {
             catch(FileNotFoundException e){
                 System.out.println("Nie wiem jak ale pliku ni ma :/");
             }
-        }
+        }*/
         
         /////////////////////////chyba chwilowo nie potrzeba tego/////////////////////////////////
         /*Account acA = new Account("John", "Doe", initialBalanceA, "12345678901234567890123456");

@@ -21,6 +21,8 @@ public class DiscService {
 
     List<Account> accounts = new ArrayList<Account>();
     List<Withdraw> withdraws = new ArrayList<Withdraw>();
+    List<Deposit> deposits = new ArrayList<Deposit>();
+    List<Transfer> transfers = new ArrayList<Transfer>();
     
     public DiscService(String sourceFilesFolder) throws IOException {
         Path path = Paths.get(sourceFilesFolder);
@@ -63,6 +65,25 @@ public class DiscService {
         }
         return false;
     }     
+    private static Pattern fileExtnDep = Pattern.compile("([^\\s]+(\\.(?i)(dep))$)");     
+    public static boolean validateFileExtnDep(String userName){
+         
+        Matcher mtch = fileExtnDep.matcher(userName);
+        if(mtch.matches()){
+            return true;
+        }
+        return false;
+    }     
+    private static Pattern fileExtnTrans = Pattern.compile("([^\\s]+(\\.(?i)(tra))$)");     
+    public static boolean validateFileExtnTrans(String userName){
+         
+        Matcher mtch = fileExtnTrans.matcher(userName);
+        if(mtch.matches()){
+            return true;
+        }
+        return false;
+    }     
+    
     
     public List<Account> getAccounts() {
         return this.accounts;
@@ -72,9 +93,17 @@ public class DiscService {
         return this.withdraws;
     }
     
+    public List<Deposit> getDeposits(){
+        return this.deposits;
+    }
+    
+    public List<Transfer> getTransfers(){
+        return this.transfers;
+    }
+    
     private List<Path> getSourceFiles(Path dir) throws IOException {
         List<Path> result = new ArrayList<>();
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, "*.{acc,dep,wit}")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, "*.{acc,dep,wit,tra}")) {
             for (Path entry : stream) {
                 result.add(entry);
               
@@ -113,6 +142,37 @@ public class DiscService {
         }        
     }
     
+    private Deposit readDepositFromFile (Path filePath) throws IOException{
+       
+        Account tempAccount = new Account();
+        int amount;
+        String accNr = new String();
+        try(BufferedReader reader = Files.newBufferedReader(filePath, StandardCharsets.UTF_8)){
+            accNr = reader.readLine();
+            amount = Integer.parseInt(reader.readLine());
+            tempAccount.setAccnumber(accNr);
+            Deposit tempDep = new Deposit(tempAccount, amount);
+            return tempDep;
+        }        
+    }
+    
+    private Transfer readTransferFromFile (Path filePath) throws IOException{
+       
+        Account tempAccount1 = new Account();
+        Account tempAccount2 = new Account();
+        int amount;
+        String accNr1 = new String();
+        String accNr2 = new String();
+        try(BufferedReader reader = Files.newBufferedReader(filePath, StandardCharsets.UTF_8)){
+            accNr1 = reader.readLine();
+            accNr2 = reader.readLine();
+            amount = Integer.parseInt(reader.readLine());
+            tempAccount1.setAccnumber(accNr1);
+            tempAccount2.setAccnumber(accNr2);
+            Transfer tempTrans = new Transfer(tempAccount1,tempAccount2,amount);
+            return tempTrans;
+        }        
+    }
 //    private Withdraw readDepositFromFile (Path filePath) throws IOException{
 //       
 //        Account tempAccount = new Account();

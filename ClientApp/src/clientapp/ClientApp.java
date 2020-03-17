@@ -13,16 +13,20 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+
 
 public class ClientApp {
 
     public Scanner s;
-    public Random rand;
+    public Random rand = new Random();
 
     public static Account checkacc() {
         boolean ch = false;
         Account ac1 = new Account();
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\processed\\";
+        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\processed\\";
         while (!ch) {
             Scanner nr = new Scanner(System.in);
             try {
@@ -41,8 +45,8 @@ public class ClientApp {
         }
         return ac1;
     }
-    public static void newClient() {
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
+    public void newClient() throws NoSuchAlgorithmException, FileNotFoundException {
+        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
         Random rac = new Random();
         String acnum = "";
         String cnum = "";
@@ -56,49 +60,43 @@ public class ClientApp {
         }
 
         Scanner cl = new Scanner(System.in);
-       
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
         System.out.print("Podaj imię: ");
         String cname = cl.nextLine();
         System.out.print("Podaj nazwisko: ");
         String csname = cl.nextLine();
         System.out.print("Podaj saldo: ");
         String cbalance = cl.nextLine();
-        try {
-
-            PrintWriter pw = new PrintWriter(sharedFolder + acnum + ".acc"); 
-            pw.println(cname);
-            pw.println(csname);
-            pw.println(acnum);
-            pw.println(cnum);
-            pw.println(cbalance);
-            pw.close();
-            System.out.println("");
-            System.out.println("Konto zostało utworzone pomyślnie");
-            System.out.println("Twoj numer konta to: " + acnum);
-            System.out.println("Twoj numer karty to: " + cnum);
-
-        } catch (FileNotFoundException e) {
-            System.out.println("nie wiem jak, ale pliku brak :/");
-        }
+        String fileName = sharedFolder + acnum + "_" + Integer.toString(rand.nextInt(1000)) + "_" + timestamp.getTime() + ".acc";
+        PrintWriter pw = new PrintWriter(fileName);
+        pw.println(cname);
+        pw.println(csname);
+        pw.println(acnum);
+        pw.println(cnum);
+        pw.println(cbalance);
+        pw.close();
+        System.out.println("");
+        System.out.println("Konto zostało utworzone pomyślnie");
+        System.out.println("Twoj numer konta to: " + acnum);
+        System.out.println("Twoj numer karty to: " + cnum);
 
     }
     
-    public static void commandDeposit(){
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
+    public void commandDeposit(){
+        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
         Scanner c1 = new Scanner(System.in);
-        Random r= new Random();
-        String command="";
-        for (int y = 0; y < 5; y++) {
-            int pn = r.nextInt(89) + 10;
-            command = command + Integer.toString(pn);
-        }   
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String command = "Wplata";
+                
         System.out.print("Podaj kwote: ");
         String deposit = c1.nextLine();
         System.out.println("Podaj numer konta: ");
         String accnr = checkacc().getAccnumber();
                         
         try{
-            PrintWriter pw = new PrintWriter(sharedFolder + command + ".dep");
+            String fileName = sharedFolder + accnr + "_" + Integer.toString(rand.nextInt(1000)) + "_" + timestamp.getTime() + ".dep";
+            PrintWriter pw = new PrintWriter(fileName);
             pw.println(accnr);
             pw.println(deposit);
             pw.close();
@@ -107,15 +105,11 @@ public class ClientApp {
         }
     }
     
-    public static void commandWithdraw(){
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
+    public void commandWithdraw(){
+        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
         Scanner c1 = new Scanner(System.in);
-        Random r= new Random();
-        String command="";
-        for (int y = 0; y < 5; y++) {
-            int pn = r.nextInt(89) + 10;
-            command = command + Integer.toString(pn);
-        }
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String command = "Wyciąg";
                 
         System.out.print("Podaj kwote: ");
         String withdraw = c1.nextLine();
@@ -123,7 +117,8 @@ public class ClientApp {
         String accnr = checkacc().getAccnumber();
                         
         try{
-            PrintWriter pw = new PrintWriter(sharedFolder + command + ".wit");
+            String fileName = sharedFolder + accnr + "_" + Integer.toString(rand.nextInt(1000)) + "_" + timestamp.getTime() + ".wit";
+            PrintWriter pw = new PrintWriter(fileName);
             pw.println(accnr);
             pw.println(withdraw);
             pw.close();
@@ -132,15 +127,12 @@ public class ClientApp {
         }
     }
     
-    public static void commandTransfer(){
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
+    public void commandTransfer(){
+        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
+        boolean ch=false;
         Scanner c1 = new Scanner(System.in);
-        Random r= new Random();
-        String command="";
-        for (int y = 0; y < 5; y++) {
-            int pn = r.nextInt(89) + 10;
-            command = command + Integer.toString(pn);
-        }
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String command = "Przelew";
         System.out.println("Podaj numer konta, z którego chcesz przelać fundusze: ");
         String accnr1 = checkacc().getAccnumber();
         System.out.println("Podaj numer konta, na które chcesz przenieść fundusze: ");   
@@ -148,7 +140,8 @@ public class ClientApp {
         System.out.println("Podaj kwote: ");
         String transfer = c1.nextLine();
         try{
-            PrintWriter pw = new PrintWriter(sharedFolder + command + ".tra");
+            String fileName = sharedFolder + accnr1 + "_" + Integer.toString(rand.nextInt(1000)) + "_" + timestamp.getTime() + ".tra";
+            PrintWriter pw = new PrintWriter(fileName);
             pw.println(accnr1);
             pw.println(accnr2);
             pw.println(transfer);
@@ -166,7 +159,9 @@ public class ClientApp {
         return answer;
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, NoSuchAlgorithmException {
+        
+        ClientApp clientApp = new ClientApp();
         //questionInput("Podaj wartość, którą chcesz wprowadzić: ");
         boolean cont = true;//
         boolean res = true;//
@@ -180,17 +175,17 @@ public class ClientApp {
                     choice = questionInput("Co chcesz zrobic?(wp=wplata/wy=wyplata/p=przelew/pl=platnosc)");
                     if (choice.equals("wp")) {
                         System.out.println("operacja wplaty");
-                        commandDeposit();                       
+                        clientApp.commandDeposit();                       
                     } else if (choice.equals("wy")) {
                         System.out.println("operacja wyplaty");
-                        commandWithdraw();
+                        clientApp.commandWithdraw();
                     }
                     else if (choice.equals("pl")){
-                        commandWithdraw();//nie widze sensu tworzenia specjalnie nowej metody bo to wlasciwie jest jedno i to samo
+                        clientApp.commandWithdraw();//nie widze sensu tworzenia specjalnie nowej metody bo to wlasciwie jest jedno i to samo
                     }
                       else if (choice.equals("p")) {
-                        commandTransfer();
-                    } else { 
+                        clientApp.commandTransfer();
+                    } else {
                         System.out.println("Nieprawidlowa komenda");
                     }
                     choice = questionInput("Czy chcesz zakonczyc?(y/n)");
@@ -203,7 +198,7 @@ public class ClientApp {
                 }
             } else if (choice.equals("k")) {
                 res = false;
-                newClient();
+                clientApp.newClient();
             } else{
                 System.out.println("Nieprawidlowa komenda");
             }
@@ -212,3 +207,4 @@ public class ClientApp {
         //
     }
 }
+

@@ -187,14 +187,14 @@ public class Bank {
                 }
             }//pobiera wpisy z listy wyciagow w service i przenosi je do aktualnej listy
             withdraws.add(wyciag);
-                    System.out.println("pobranie withdraw"); 
+
         }
     }
     
     public void importWithdraws(){
                 for (Withdraw wyciag : this.withdraws) {
                 this.withdraw(wyciag);//wykonuje wszystkie operacje withdraw z listy?
-                    System.out.println("wykonanie withdraw"); 
+
                     
         }
     }

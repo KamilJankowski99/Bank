@@ -37,7 +37,7 @@ public class DiscService {
             withdraws.add(readWithdrawFromFile(plik));
             }
             File f= new File(plik.getParent()+"\\processed\\"+plik.getFileName());
-            if(f.exists()){
+            if(f.exists()&&validateFileExtnAcc(plik.getFileName().getFileName().toString())){
                 Account tempa= readFromFile(plik);
                 Account tempb= readFromFile(Paths.get(plik.getParent()+"\\processed\\"+plik.getFileName()));
                 if(tempa.getBalance()!=tempb.getBalance()){

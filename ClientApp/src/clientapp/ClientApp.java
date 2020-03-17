@@ -22,7 +22,7 @@ public class ClientApp {
     public static Account checkacc() {
         boolean ch = false;
         Account ac1 = new Account();
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\processed\\";
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(6)\\shared\\";
         while (!ch) {
             Scanner nr = new Scanner(System.in);
             try {
@@ -42,7 +42,7 @@ public class ClientApp {
         return ac1;
     }
     public static void newClient() {
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(6)\\shared\\";
         Random rac = new Random();
         String acnum = "";
         String cnum = "";
@@ -84,7 +84,7 @@ public class ClientApp {
     }
     
     public static void commandDeposit(){
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(6)\\shared\\";
         Scanner c1 = new Scanner(System.in);
         Random r= new Random();
         String command="";
@@ -108,7 +108,7 @@ public class ClientApp {
     }
     
     public static void commandWithdraw(){
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(6)\\shared\\";
         Scanner c1 = new Scanner(System.in);
         Random r= new Random();
         String command="";
@@ -133,7 +133,7 @@ public class ClientApp {
     }
     
     public static void commandTransfer(){
-        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(5)\\shared\\";
+        String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(6)\\shared\\";
         Scanner c1 = new Scanner(System.in);
         Random r= new Random();
         String command="";
@@ -169,7 +169,7 @@ public class ClientApp {
     public static void main(String[] args) throws FileNotFoundException {
         //questionInput("Podaj wartość, którą chcesz wprowadzić: ");
         boolean cont = true;//
-        boolean res = true;//
+        boolean res = true;// 
         while (res) {
             String choice = questionInput("Co chcesz zrobic?(o=operacje bankowe/k=nowe konto)");
             if (choice.equals("o")) {

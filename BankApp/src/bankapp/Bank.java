@@ -1,5 +1,10 @@
 package bankapp;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -93,12 +98,18 @@ class Transfer implements Runnable {
 }
 
 public class Bank {
+    
+    public List<Account> accounts = new ArrayList<Account>();
+    public static List<Withdraw> withdraws = new ArrayList<Withdraw>();
+    private String sharedFolder = "C:\\Users\\Brzezik\\Documents\\NetBeansProjects\\BankApp(6)\\shared\\";
+    DiscService Service;
 
-    public Scanner s = new Scanner(System.in);
+    private Scanner s = new Scanner(System.in);
 
     private ThreadPoolExecutor executor;
 
-    public Bank(int numberOfThreads) {
+    public Bank(int numberOfThreads) throws IOException {
+        this.Service = new DiscService(sharedFolder);
         this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(numberOfThreads);
     }
 
@@ -136,5 +147,55 @@ public class Bank {
     public void transfer(Account accountA, Account accountB, int kwota) {
         Transfer operacja = new Transfer(accountA, accountB, kwota);
         this.executor.execute(operacja);
+    }
+    
+    public void materializeAccounts(){
+                for (Account account : this.accounts ){//dla wszystkich wpisow z listy accounts zapisuje plik z danymi klienta
+                    int tempB = account.getBalance();
+                    String tempAnum = account.getAccnumber();
+                    String tempN = account.getName();
+                    String tempSN = account.getSurname();
+                    String tempCnum = account.getCnumber();
+            try{
+                PrintWriter pw = new PrintWriter(this.sharedFolder + tempAnum + ".acc"); 
+                pw.println(tempN);
+                pw.println(tempSN);
+                pw.println(tempAnum);
+                pw.println(tempCnum);
+                pw.println(tempB);
+                pw.close();
+            }
+            catch(FileNotFoundException e){
+                System.out.println("Nie udalo sie stworzyc pliku z zapisem aktualnego stanu konta! " + tempAnum);
+            }
+        }
+    }
+    
+    public void importAccounts() throws IOException{
+                for (Account konto : Service.getAccounts()) {//pobiera wpisy z listy w service i przekazuje do aktualnej listy
+                this.accounts.add(konto);
+        }
+    }
+    
+    public void bindWithdrawsAccounts(){
+                for (Withdraw wyciag : this.Service.getWithdraws()) {
+            for (Account account : accounts){
+                String nr1 = account.getAccnumber();
+                String nr2 = wyciag.getAccount().getAccnumber();
+                if (nr1.equals(nr2)){
+                    wyciag.setAccount(account);
+                }
+            }//pobiera wpisy z listy wyciagow w service i przenosi je do aktualnej listy
+            withdraws.add(wyciag);
+                    System.out.println("pobranie withdraw"); 
+        }
+    }
+    
+    public void importWithdraws(){
+                for (Withdraw wyciag : this.withdraws) {
+                this.withdraw(wyciag);//wykonuje wszystkie operacje withdraw z listy?
+                    System.out.println("wykonanie withdraw"); 
+                    
+        }
     }
 }

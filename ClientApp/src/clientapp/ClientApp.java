@@ -26,7 +26,7 @@ public class ClientApp {
     public static Account checkacc() {
         boolean ch = false;
         Account ac1 = new Account();
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\processed\\";
+        String sharedFolder = "..\\BankApp\\shared\\processed\\";
         while (!ch) {
             Scanner nr = new Scanner(System.in);
             try {
@@ -46,7 +46,7 @@ public class ClientApp {
         return ac1;
     }
     public void newClient() throws NoSuchAlgorithmException, FileNotFoundException {
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
+        String sharedFolder = "..\\BankApp\\shared\\";
         Random rac = new Random();
         String acnum = "";
         String cnum = "";
@@ -84,7 +84,7 @@ public class ClientApp {
     }
     
     public void commandDeposit(){
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
+        String sharedFolder = "..\\BankApp\\shared\\";
         Scanner c1 = new Scanner(System.in);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String command = "Wplata";
@@ -92,7 +92,7 @@ public class ClientApp {
         System.out.print("Podaj kwote: ");
         String deposit = c1.nextLine();
         System.out.println("Podaj numer konta: ");
-        String accnr = checkacc().getAccnumber();
+        String accnr = c1.nextLine();
                         
         try{
             String fileName = sharedFolder + accnr + "_" + Integer.toString(rand.nextInt(1000)) + "_" + timestamp.getTime() + ".dep";
@@ -106,7 +106,7 @@ public class ClientApp {
     }
     
     public void commandWithdraw(){
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
+        String sharedFolder = "..\\BankApp\\shared\\";
         Scanner c1 = new Scanner(System.in);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String command = "Wyciąg";
@@ -114,7 +114,7 @@ public class ClientApp {
         System.out.print("Podaj kwote: ");
         String withdraw = c1.nextLine();
         System.out.println("Podaj numer konta: ");
-        String accnr = checkacc().getAccnumber();
+        String accnr = c1.nextLine();
                         
         try{
             String fileName = sharedFolder + accnr + "_" + Integer.toString(rand.nextInt(1000)) + "_" + timestamp.getTime() + ".wit";
@@ -128,15 +128,15 @@ public class ClientApp {
     }
     
     public void commandTransfer(){
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";
+        String sharedFolder = "..\\BankApp\\shared\\";
         boolean ch=false;
         Scanner c1 = new Scanner(System.in);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String command = "Przelew";
         System.out.println("Podaj numer konta, z którego chcesz przelać fundusze: ");
-        String accnr1 = checkacc().getAccnumber();
+        String accnr1 = c1.nextLine();
         System.out.println("Podaj numer konta, na które chcesz przenieść fundusze: ");   
-        String accnr2 = checkacc().getAccnumber();
+        String accnr2 = c1.nextLine();
         System.out.println("Podaj kwote: ");
         String transfer = c1.nextLine();
         try{
@@ -181,7 +181,7 @@ public class ClientApp {
                         clientApp.commandWithdraw();
                     }
                     else if (choice.equals("pl")){
-                        clientApp.commandWithdraw();//nie widze sensu tworzenia specjalnie nowej metody bo to wlasciwie jest jedno i to samo
+                        clientApp.commandWithdraw();
                     }
                       else if (choice.equals("p")) {
                         clientApp.commandTransfer();

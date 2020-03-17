@@ -109,7 +109,7 @@ class Transfer implements Runnable {
             accountB.setBalance(newBalanceB);
         }
         else{
-            System.out.println("Niewystarczajaca ilosc srodkow na koncie "+accountA.getAccnumber());
+            System.out.println("Niewystarczajaca ilosc srodkow na koncie " + accountA.getAccnumber());
         }
     }
 }
@@ -120,7 +120,7 @@ public class Bank {
     public static List<Withdraw> withdraws = new ArrayList<Withdraw>();
     public static List<Deposit> deposits = new ArrayList<Deposit>();
     public static List<Transfer> transfers = new ArrayList<Transfer>();
-    private String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared";
+    private String sharedFolder = ".\\shared";
     DiscService Service;
 
     private Scanner s = new Scanner(System.in);

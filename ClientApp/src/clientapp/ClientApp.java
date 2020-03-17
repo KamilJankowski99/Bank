@@ -154,22 +154,9 @@ public class ClientApp {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        String acnum = "";
-        String sharedFolder = "C:\\Users\\Kamil\\Desktop\\Bank\\BankApp\\shared\\";;
         //questionInput("Podaj wartość, którą chcesz wprowadzić: ");
         boolean cont = true;//
         boolean res = true;//
-        boolean exist = false;//
-        Random rand = new Random();
-        int initialBalanceA = 50000;
-        int initialBalanceB = 50000;
-        int wygenerowanaLiczba;
-        int wygenerowanaLiczba2;
-        int withdrawAmountB = 0;
-        int depositAmountA = 0;
-        int depositAmountB = 0;
-        int t;//
-        
         while (res) {
             String choice = questionInput("Co chcesz zrobic?(o=operacje bankowe/k=nowe konto)");
             if (choice.equals("o")) {
@@ -177,14 +164,18 @@ public class ClientApp {
                 
 
                 while (cont) {
-                    choice = questionInput("Co chcesz zrobic?(wp=wplata/wy=wyplata/p=przelew)");
+                    choice = questionInput("Co chcesz zrobic?(wp=wplata/wy=wyplata/p=przelew/pl=platnosc)");
                     if (choice.equals("wp")) {
                         System.out.println("operacja wplaty");
                         commandDeposit();                       
                     } else if (choice.equals("wy")) {
                         System.out.println("operacja wyplaty");
                         commandWithdraw();
-                    } else if (choice.equals("p")) {
+                    }
+                    else if (choice.equals("pl")){
+                        commandWithdraw();//nie widze sensu tworzenia specjalnie nowej metody bo to wlasciwie jest jedno i to samo
+                    }
+                      else if (choice.equals("p")) {
                         commandTransfer();
                     } else {
                         System.out.println("Nieprawidlowa komenda");
@@ -200,11 +191,11 @@ public class ClientApp {
             } else if (choice.equals("k")) {
                 res = false;
                 newClient();
-            } else {
+            } else{
                 System.out.println("Nieprawidlowa komenda");
             }
         }
         
-        
+        //
     }
 }

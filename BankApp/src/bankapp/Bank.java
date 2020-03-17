@@ -50,8 +50,13 @@ class Withdraw implements Runnable {
     @Override
     public void run() {
         int currentBalance = this.account.getBalance();
-        int newBalance = currentBalance - this.wyciag;
-        this.account.setBalance(newBalance);
+        if(currentBalance>=this.wyciag){
+            int newBalance = currentBalance - this.wyciag;
+            this.account.setBalance(newBalance);
+        }
+        else{
+            System.out.println("Niewystarczajaca ilosc srodkow na koncie "+this.account.getAccnumber());
+        }
     }
 }
 
@@ -75,10 +80,15 @@ class Transfer implements Runnable {
     public void run() {
         int currentBalanceA = accountA.getBalance();
         int currentBalanceB = accountB.getBalance();
-        int newBalanceA = currentBalanceA - this.kwota;
-        int newBalanceB = currentBalanceB + this.kwota;
-        accountA.setBalance(newBalanceA);
-        accountB.setBalance(newBalanceB);
+        if(currentBalanceA>=this.kwota){
+            int newBalanceA = currentBalanceA - this.kwota;
+            int newBalanceB = currentBalanceB + this.kwota;
+            accountA.setBalance(newBalanceA);
+            accountB.setBalance(newBalanceB);
+        }
+        else{
+            System.out.println("Niewystarczajaca ilosc srodkow na koncie "+accountA.getAccnumber());
+        }
     }
 }
 
